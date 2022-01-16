@@ -1,0 +1,7 @@
+# rc_server
+rc_server/node_modules
+rc_server/dist
+
+# rc_web
+rc_web/node_modules
+rc_web/.next
