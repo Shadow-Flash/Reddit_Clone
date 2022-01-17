@@ -12,6 +12,7 @@ import { UserResolver } from "./resolvers/user";
 const redis = require("redis");
 import session from "express-session";
 import connectRedis from "connect-redis";
+import cors from 'cors';
 
 const main = async() => {
     const orm = await MikroORM.init(mikroOrmConfig)
@@ -27,6 +28,9 @@ const main = async() => {
     redisClient.on('error', (err: string) => {
         console.log('Error ' + err);
     });
+
+    app.use(cors({origin: "http://localhost:3000", credentials: true}));
+
     app.use(
         session({
             name: "qid",
@@ -38,7 +42,7 @@ const main = async() => {
                 maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 Years
                 httpOnly: true,
                 // secure: true, //cookie only works in https 
-                sameSite: "lax" //csfr
+                sameSite: "none" //csfr
             },
             saveUninitialized: false,
             secret: 'blahblahblahblacksheep',
@@ -54,7 +58,7 @@ const main = async() => {
         context: ({req, res}) => ({ em:orm.em, req, res })
     })
     await apolloServer.start();
-    apolloServer.applyMiddleware({ app, cors: { credentials: true, origin: "localhost:2022/graphql" }});
+    apolloServer.applyMiddleware({ app, cors: false});
 
     app.listen(2022, () => {
         console.log('server started on localhost:2022');
