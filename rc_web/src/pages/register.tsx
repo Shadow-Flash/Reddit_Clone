@@ -8,12 +8,9 @@ import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../utils/createUrqlClient';
+import NextLink from 'next/link';
 
-interface RegisterProps {
-
-}
-
-const Register: React.FC<RegisterProps> = ({}) => { 
+const Register: React.FC<{}> = ({}) => { 
     const router = useRouter();
     const [, register] = useRegisterMutation();
         return (
@@ -37,6 +34,9 @@ const Register: React.FC<RegisterProps> = ({}) => {
                                 <InputField name='password' placeholder='password' label='Password' type='password' />
                             </Box>
                             <Button type='submit' colorScheme={'teal'} mt={4} isLoading={props.isSubmitting} >Register</Button>
+                            <NextLink href="/">
+                                <Button colorScheme={'gray'} mt={4} ml={4}>Back to Home</Button>
+                            </NextLink>
                         </Form>
                     )}
                 </Formik>
