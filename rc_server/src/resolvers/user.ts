@@ -1,6 +1,6 @@
 import { User } from "../entities/User";
 import { MyContext } from "src/types";
-import { Resolver, Mutation, Arg, Field, Ctx, ObjectType, Query } from "type-graphql"; 
+import { Resolver, Mutation, Arg, Field, Ctx, ObjectType, Query, FieldResolver, Root } from "type-graphql"; 
 import argon2 from "argon2";
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../contants";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
@@ -26,8 +26,14 @@ class UserResponse {
     user?: User
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+    @FieldResolver(() => String)
+    email(@Root() user: User, @Ctx() {req}: MyContext){
+        if (req.session.userId === user.id) return user.email;
+        return "";
+    }
+    
     @Mutation(() => UserResponse)
     async changePassword(
         @Arg('token') token: string,
