@@ -20,9 +20,9 @@ const Index = () => {
       </Flex>
       {fetching && !data ? <div>LOADING ...</div> : (
       <Stack spacing={8}>
-        {data!.posts.posts.map(p => ( 
+        {data?.posts.posts.map(p => ( 
           <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
-            <UpdootSection points={p.points}/>
+            <UpdootSection post={p}/>
             <Box>
               <Heading fontSize="xl">
                 {p.title}
